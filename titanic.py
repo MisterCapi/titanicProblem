@@ -5,17 +5,16 @@ Created on Tue Apr 28 19:54:39 2020
 @author: jmarchewka
 """
 #imports
-#tens 
-from keras.layers import Dense, Dropout
-from keras.models import Sequential
-from keras.optimizers import Adam
+#tens
+from tensorflow.keras.layers import Dense, Dropout
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.optimizers import Adam
 #network
-import keras
-from keras.callbacks import ModelCheckpoint
-from keras.layers import Dense
-from keras.layers import BatchNormalization
-from keras import regularizers
-from keras.regularizers import l2
+import tensorflow as tf
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import BatchNormalization
+from tensorflow.keras import regularizers
+from tensorflow.keras.regularizers import l2
 #data
 import numpy as np
 import pandas as pd
@@ -44,17 +43,14 @@ sc = StandardScaler()
 X = sc.fit_transform(X)
 Y=dataset.iloc[:,1].values
 
-from keras.utils import to_categorical
+from tensorflow.keras.utils import to_categorical
 Y = to_categorical(Y)
 
 model = Sequential()
 model.add(Dense(30, activation='relu' ))
 model.add(Dense(15, activation='relu'))
 model.add(Dense(2, activation='softmax'))
-model.compile(Adam(learning_rate = 0.0003), loss = 'categorical_crossentropy', metrics = ['accuracy'])
-
-model_saver = ModelCheckpoint('saved_model', monitor='accuracy', 
-                              verbose=1, save_best_only=True, save_weights_only=False, 
-                              mode='auto', save_freq='epoch')
+model.compile(Adam(learning_rate = 0.003), loss = 'categorical_crossentropy', metrics = ['accuracy'])
+model_saver = ModelCheckpoint('saved_model', monitor='accuracy', verbose=1, save_best_only=True, save_weights_only=False, mode='auto', save_freq='epoch')
 model.fit(X, Y, epochs=800, batch_size=10, callbacks=[model_saver])
 print(model.evaluate(X, Y))
