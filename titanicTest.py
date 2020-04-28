@@ -28,7 +28,6 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import MinMaxScaler
 
-from tensorflow.keras.callbacks import ModelCheckpoint
 #imports
 
 dataset=pd.read_csv('data.csv')
@@ -53,8 +52,6 @@ model.add(Dense(15, activation='relu'))
 model.add(Dense(2, activation='softmax'))
 model.compile(Adam(learning_rate = 0.0003), loss = 'categorical_crossentropy', metrics = ['accuracy'])
 
-model_saver = ModelCheckpoint('saved_model', monitor='accuracy', 
-                              verbose=1, save_best_only=True, save_weights_only=False, 
-                              mode='auto', save_freq='epoch')
-model.fit(X, Y, epochs=800, batch_size=10, callbacks=[model_saver])
+model_saver = ModelCheckpoint('saved_model', monitor='accuracy', verbose=1, save_best_only=True, save_weights_only=False, mode='auto', save_freq='epoch')
+model.fit(X, Y, epochs=800,callbacks=[model_saver])
 print(model.evaluate(X, Y))
